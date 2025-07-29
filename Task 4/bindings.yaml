@@ -1,0 +1,27 @@
+# RoleBinding: secret-reader-binding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: secret-reader-binding
+subjects:
+  - kind: User
+    name: secret-reader-user
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secret-reader-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# RoleBinding: view-only-binding
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: view-only-binding
+subjects:
+  - kind: User
+    name: client-view-only
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: view-only-role
+  apiGroup: rbac.authorization.k8s.io

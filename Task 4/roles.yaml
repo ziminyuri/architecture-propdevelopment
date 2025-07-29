@@ -1,0 +1,47 @@
+# ClusterRole: cluster-admin
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]  # Полный доступ (CRUD)
+
+---
+# Role: namespace-admin
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: development
+  name: namespace-admin-role
+rules:
+  - apiGroups: ["", "apps", "extensions", "networking.k8s.io"] # Добавьте нужные API группы
+    resources: ["pods", "deployments", "services", "configmaps", "secrets", "replicasets", "ingresses"]  # Список ресурсов
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  # Запрет на управление RBAC
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["rolebindings", "roles"]
+    verbs: ["get", "list", "watch"]
+
+---
+# ClusterRole: view-only
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: view-only-role
+rules:
+  - apiGroups: ["*", "apps", "extensions", "networking.k8s.io"]
+    resources: ["*"] # Чтение всех ресурсов
+    verbs: ["get", "list", "watch"]
+
+---
+# ClusterRole: secret-reader
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: secret-reader-role
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch"]
